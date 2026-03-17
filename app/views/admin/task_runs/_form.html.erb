@@ -14,6 +14,10 @@ and renders all form fields for a resource's editable attributes.
 [1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
 %>
 
+<% content_for :stylesheet do %>
+  <%= stylesheet_link_tag "administrate/task/ui/application" %>
+<% end %>
+
 <%= form_with(model: page.resource, url: [namespace, page.resource], scope: page.resource, local: true, class: "form") do |f| %>
   <% if page.resource.errors.any? %>
     <div id="error_explanation">
@@ -57,17 +61,17 @@ and renders all form fields for a resource's editable attributes.
   <div class="form-actions">
     <script>
       async function viewSourceCode() {
-        document.querySelector('#my-dialog code pre').innerHTML = 'loading...';
+        document.querySelector('#administrate-task-ui-source-code-dialog code pre').innerHTML = 'loading...';
         const form = document.querySelector('form');
         const taskName = form.querySelector('select[name="task_run[task_name]"]').value;
         const response = await fetch(`<%= source_code_admin_task_runs_path %>?task_name=${taskName}`);
         const text = await response.text();
-        document.querySelector('#my-dialog code pre').innerHTML = text;
+        document.querySelector('#administrate-task-ui-source-code-dialog code pre').innerHTML = text;
       }
     </script>
-    <button class="button--alt" command="show-modal" commandfor="my-dialog" type="button" onclick="viewSourceCode()">View Source Code</button>
+    <button class="button--alt" command="show-modal" commandfor="administrate-task-ui-source-code-dialog" type="button" onclick="viewSourceCode()">View Source Code</button>
 
-    <dialog id="my-dialog" closedby="any">
+    <dialog id="administrate-task-ui-source-code-dialog" closedby="any">
       <h2>Source Code</h2>
       <code>
         <pre>

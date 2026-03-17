@@ -10,28 +10,30 @@ module Administrate
         end
 
         def call
-          task_run = ::TaskRun.create!(
+          # TODO: CacheAccessor should early return if there is a lock here
+          # TODO: CacheAccessor should lock here
+          task_run = ::TaskRun.create(
             task_name:,
             status: "running",
             output: "n/a",
             error: "n/a",
             started_at: Time.current,
             user_id: current_user.id,
-            metadata: {}
           )
+          task_pid = fork do
+            task_run.update(
+              metadata: {
+                process_id: Process.pid
+              }
+            )
 
-          rake_task = ::Rake::Task[task_name]
-          rake_task.reenable
+            rake_task = ::Rake::Task[task_name]
+            rake_task.reenable
 
-          # TODO: CacheAccessor for checking for a lock on the task
-          fork do
             task_run_result = with_captured_io do
-              # TODO: CacheAccessor for locking the task
               rake_task.invoke
             end
 
-            # TODO: Rename namespace to avoid collisions with Rake gem
-            # TODO: Add actor_id and actor_type column
             task_run.update(
               status: task_run_result[:success] ? "success" : "error",
               output: task_run_result[:stdout],
@@ -39,23 +41,32 @@ module Administrate
               metadata: {
                 user_id: current_user.id,
                 user_email: current_user.email_address,
-                duration: task_run_result[:finished_at] - task_run.started_at
+                duration: task_run_result[:finished_at] - task_run.started_at,
+                process_id: Process.pid
               },
               error: build_error(task_run_result[:error])
             )
+
+            # TODO: CacheAccessor should unlock here
           end
 
-          task_run
+          # Ensure when the child process terminates, zombie
+          # processes are not left behind.
+          Process.detach(task_pid)
+
+          task_run.reload
         end
 
         private
 
         def build_error(error)
-          {}.tap do |hash|
-            hash[:class] = error.class.name
-            hash[:message] = error.detailed_message
-            hash[:backtrace] = error.backtrace
-          end
+          return {} if error.blank?
+
+          {
+            class: error.class.name,
+            message: error.detailed_message,
+            backtrace: error.backtrace
+          }
         end
 
         def with_captured_io

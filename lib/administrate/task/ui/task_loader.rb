@@ -29,16 +29,20 @@ module Administrate
               should_load_tasks = true
             end
 
-            if ::Rake.respond_to?(:application) && ::Rake.application.tasks.empty?
+            if should_load_tasks == false && ::Rake.respond_to?(:application) && ::Rake.application.tasks.empty?
               should_load_tasks = true
             end
 
-            if ::Rake::TaskManager.respond_to?(:record_task_metadata)
-              Rake::TaskManager.record_task_metadata = true
-            end
+            track_task_description_as_comment
 
             if should_load_tasks
               ::Rails.application.load_tasks
+            end
+          end
+
+          def track_task_description_as_comment
+            if ::Rake::TaskManager.respond_to?(:record_task_metadata)
+              Rake::TaskManager.record_task_metadata = true
             end
           end
         end

@@ -1,0 +1,34 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+#administrate-task-ui-source-code-dialog {
+  border: 0;
+  box-shadow:
+    0 0 6px 0 rgba(0, 0, 0, 0.12),
+    0 2px 2px rgba(0, 0, 0, 0.2);
+  h2 {
+    margin-bottom: 16px;
+  }
+  pre {
+    background-color: #181818;
+    border-radius: 4px;
+    color: #e5e5e5;
+    margin: 0;
+    padding: 8px;
+  }
+  code {
+  }
+}
