@@ -13,6 +13,7 @@ module Admin
     end
 
     def source_code
+      # TODO: guard against missing file
       @source_code ||= File.read(
         ::Administrate::Task::Ui::TaskFormatter.available_tasks_hash[params[:task_name]][:source_location]
       )

@@ -58,27 +58,22 @@ and renders all form fields for a resource's editable attributes.
     </fieldset>
   <% end -%>
 
-  <div class="form-actions">
-    <script>
-      async function viewSourceCode() {
-        document.querySelector('#administrate-task-ui-source-code-dialog code pre').innerHTML = 'loading...';
-        const form = document.querySelector('form');
-        const taskName = form.querySelector('select[name="task_run[task_name]"]').value;
-        const response = await fetch(`<%= source_code_admin_task_runs_path %>?task_name=${taskName}`);
-        const text = await response.text();
-        document.querySelector('#administrate-task-ui-source-code-dialog code pre').innerHTML = text;
-      }
-    </script>
-    <button class="button--alt" command="show-modal" commandfor="administrate-task-ui-source-code-dialog" type="button" onclick="viewSourceCode()">View Source Code</button>
+  <div class="form-actions administrate-task-ui flex gap-2">
+    <div
+      data-controller="administrate-task-ui-view-source-code"
+      data-administrate-task-ui-view-source-code-url-value="<%= source_code_admin_task_runs_url %>"
+    >
+      <button class="button--alt" command="show-modal" commandfor="administrate-task-ui-source-code-dialog" type="button" data-action="administrate-task-ui-view-source-code#loadSourceCode">View Source Code</button>
 
-    <dialog id="administrate-task-ui-source-code-dialog" closedby="any">
-      <h2>Source Code</h2>
-      <code>
-        <pre>
-          loading...
-        </pre>
-      </code>
-    </dialog>
+      <dialog id="administrate-task-ui-source-code-dialog" closedby="any">
+       <h2>Source Code</h2>
+        <code>
+          <pre data-administrate-task-ui-view-source-code-target="sourceCode">
+            loading...
+          </pre>
+        </code>
+      </dialog>
+    </div>
 
     <%= f.submit %>
   </div>

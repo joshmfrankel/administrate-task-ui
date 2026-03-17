@@ -21,9 +21,10 @@ module Administrate
         def available_tasks_hash
           @_available_tasks_hash ||= {}.tap do |hash|
             available_tasks.each do |task|
+              comment = task.full_comment.present? ? "\"#{task.full_comment}\"" : "*** No description ***"
               hash[task.name] = {
                 value: task.name,
-                comment: task.full_comment || "*** No description ***",
+                comment:,
                 source_location: task.actions[0].source_location[0],
                 arg_names: task.arg_names
               }

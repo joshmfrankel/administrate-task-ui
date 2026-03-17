@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "build": "esbuild app/assets/javascripts/administrate/task/ui/application.js --bundle --sourcemap --outdir=app/assets/builds/administrate/task/ui --public-path=/assets/administrate/task/ui"
+  },
+  "name": "administrate-task-ui",
+  "packageManager": "yarn@4.10.3",
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^8.0.23"
+  },
+  "devDependencies": {
+    "esbuild": "^0.27.4"
+  }
+}
