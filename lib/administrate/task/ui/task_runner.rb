@@ -2,11 +2,12 @@ module Administrate
   module Task
     module Ui
       class TaskRunner
-        attr_reader :task_name, :current_user
+        attr_reader :task_name, :current_user, :arguments
 
-        def initialize(task_name, current_user)
+        def initialize(task_name:, current_user:, arguments: {})
           @task_name = task_name
           @current_user = current_user
+          @arguments = arguments&.values || {}
         end
 
         def call
@@ -23,7 +24,8 @@ module Administrate
           task_pid = fork do
             task_run.update(
               metadata: {
-                process_id: Process.pid
+                process_id: Process.pid,
+                arguments: arguments
               }
             )
 
@@ -31,7 +33,7 @@ module Administrate
             rake_task.reenable
 
             task_run_result = with_captured_io do
-              rake_task.invoke
+              rake_task.invoke(*arguments)
             end
 
             task_run.update(
@@ -42,7 +44,8 @@ module Administrate
                 user_id: current_user.id,
                 user_email: current_user.email_address,
                 duration: task_run_result[:finished_at] - task_run.started_at,
-                process_id: Process.pid
+                process_id: Process.pid,
+                arguments: arguments
               },
               error: build_error(task_run_result[:error])
             )

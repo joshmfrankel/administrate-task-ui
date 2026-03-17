@@ -14,11 +14,7 @@ and renders all form fields for a resource's editable attributes.
 [1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
 %>
 
-<% content_for :stylesheet do %>
-  <%= stylesheet_link_tag "administrate/task/ui/application" %>
-<% end %>
-
-<%= form_with(model: page.resource, url: [namespace, page.resource], scope: page.resource, local: true, class: "form") do |f| %>
+<%= form_with(model: page.resource, url: [namespace, page.resource], scope: page.resource, local: true, class: "form", data: { controller: "administrate-task-ui-add-arg-inputs", "administrate-task-ui-add-arg-inputs-available-tasks-value" => ::Administrate::Task::Ui::TaskFormatter.available_tasks_hash }) do |f| %>
   <% if page.resource.errors.any? %>
     <div id="error_explanation">
       <h2>
@@ -54,6 +50,8 @@ and renders all form fields for a resource's editable attributes.
             </div>
           <% end -%>
         </div>
+
+        <div data-administrate-task-ui-add-arg-inputs-target="inputContainer"></div>
       <% end %>
     </fieldset>
   <% end -%>
