@@ -6,15 +6,8 @@ module Administrate
           def available_tasks
             load_tasks
 
-            # TODO: Make this configurable
-            allowed_tasks = [
-              "next:hello",
-              "say",
-              "argument"
-            ]
-
             @_available_tasks ||= ::Rake.application.tasks.select do |task|
-              allowed_tasks.any? do |allowed_task|
+              Administrate::Task::Ui.allowed_tasks.any? do |allowed_task|
                 task.name.start_with?(allowed_task)
               end
             end

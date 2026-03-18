@@ -8,6 +8,7 @@ require "administrate/task/ui/task_formatter"
 module Administrate
   module Task
     module Ui
+      mattr_accessor :allowed_tasks, default: []
     end
   end
 end

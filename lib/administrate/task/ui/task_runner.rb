@@ -2,18 +2,19 @@ module Administrate
   module Task
     module Ui
       class TaskRunner
-        attr_reader :task_name, :current_user, :arguments
+        attr_reader :task_name, :current_user, :arguments, :runner_class
 
         def initialize(task_name:, current_user:, arguments: {})
           @task_name = task_name
           @current_user = current_user
           @arguments = arguments&.values || {}
+          @runner_class = ::TaskRun
         end
 
         def call
           # TODO: CacheAccessor should early return if there is a lock here
           # TODO: CacheAccessor should lock here
-          task_run = ::TaskRun.create(
+          task_run = runner_class.create(
             task_name:,
             status: "running",
             output: "n/a",

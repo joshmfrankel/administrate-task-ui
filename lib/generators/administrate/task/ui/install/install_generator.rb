@@ -16,31 +16,38 @@ module Administrate
 
         def generate_migration
           migration_template(
-            "db/migrate/create_administrate_task_runs.rb.erb",
-            "db/migrate/create_administrate_task_runs.rb"
+            "db/migrate/create_admin_task_runs.rb.erb",
+            "db/migrate/create_admin_task_runs.rb"
           )
         end
 
-        def generate_model
+        def generate_initializer
           template(
-            "models/administrate/task/ui/task_run.rb.erb",
-            "app/models/administrate/task/ui/task_run.rb"
+            "config/initializers/administrate_task_ui.rb.erb",
+            "config/initializers/administrate_task_ui.rb"
           )
         end
 
-        def generate_controller
-          template(
-            "controllers/admin/administrate/task/ui/task_runs_controller.rb.erb",
-            "app/controllers/admin/administrate/task/ui/task_runs_controller.rb"
-          )
-        end
+        # def generate_model
+        #   template(
+        #     "models/administrate/task/ui/task_run.rb.erb",
+        #     "app/models/administrate/task/ui/task_run.rb"
+        #   )
+        # end
 
-        def generate_dashboard
-          template(
-            "dashboards/administrate/task/ui/task_run_dashboard.rb.erb",
-            "app/dashboards/administrate/task/ui/task_run_dashboard.rb"
-          )
-        end
+        # def generate_controller
+        #   template(
+        #     "controllers/admin/task_runs_controller.rb.erb",
+        #     "app/controllers/admin/task_runs_controller.rb"
+        #   )
+        # end
+
+        # def generate_dashboard
+        #   template(
+        #     "dashboards/admin/task_run_dashboard.rb.erb",
+        #     "app/dashboards/admin/task_run_dashboard.rb"
+        #   )
+        # end
 
         def self.next_migration_number(dir)
           ::ActiveRecord::Generators::Base.next_migration_number(dir)

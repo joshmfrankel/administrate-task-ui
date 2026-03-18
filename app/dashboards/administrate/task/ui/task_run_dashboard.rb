@@ -58,12 +58,6 @@ module Administrate
         COLLECTION_FILTERS = {
           status: ->(resources, value) { resources.where(status: value) }
         }
-
-        private
-
-        def self.model
-          ::TaskRun
-        end
       end
     end
   end

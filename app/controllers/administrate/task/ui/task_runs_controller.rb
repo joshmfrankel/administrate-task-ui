@@ -34,12 +34,8 @@ module Administrate
         end
 
         def scoped_resource
-          ::TaskRun.order(finished_at: :desc)
+          resource_class.order(finished_at: :desc)
         end
-
-        # def resource_class
-        #   ::Administrate::Task::Ui::TaskRun
-        # end
       end
     end
   end

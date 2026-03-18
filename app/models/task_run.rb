@@ -1,3 +1,2 @@
-class TaskRun < ApplicationRecord
-  self.table_name = "administrate_task_runs"
+class TaskRun < ::Administrate::Task::Ui::TaskRun
 end
