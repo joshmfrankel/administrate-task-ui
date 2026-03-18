@@ -1,6 +1,14 @@
-## Add the tasks you want to allow here.
+# Add the tasks you want to allow here.
 # Administrate::Task::Ui.allowed_tasks = [
 #   "next:hello",
 #   "say",
 #   "argument"
 # ]
+
+# Add additional user metadata to be stored on the TaskRun.
+# Administrate::Task::Ui.metadata = -> do
+#   current_user = Current.user
+#   {
+#     user_id: current_user.id
+#   }
+# end

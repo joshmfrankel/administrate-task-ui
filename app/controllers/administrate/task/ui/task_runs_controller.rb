@@ -5,7 +5,6 @@ module Administrate
         def create
           result = ::Administrate::Task::Ui::TaskRunner.new(
             task_name: task_run_params[:task_name],
-            current_user:,
             arguments: task_run_params[:arguments]
           ).call
 

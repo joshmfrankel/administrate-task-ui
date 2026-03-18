@@ -12,7 +12,6 @@ module Administrate
             }
           ),
           status: Field::String,
-          user_id: Field::Number,
           output: Field::Text,
           error: Field::Text,
           metadata: Field::Text,
@@ -33,7 +32,6 @@ module Administrate
           id
           task_name
           status
-          user_id
           started_at
           finished_at
           duration
@@ -43,7 +41,6 @@ module Administrate
           id
           task_name
           status
-          user_id
           output
           error
           metadata

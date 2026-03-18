@@ -11,9 +11,6 @@ module Administrate
         include ::Administrate::GeneratorHelpers
 
         source_root File.expand_path("../templates", __FILE__)
-
-        # TODO: Setup base classes, inject empty override files for each
-
         def generate_migration
           migration_template(
             "db/migrate/create_admin_task_runs.rb.erb",
@@ -26,6 +23,19 @@ module Administrate
             "config/initializers/administrate_task_ui.rb.erb",
             "config/initializers/administrate_task_ui.rb"
           )
+        end
+
+        # @see https://github.com/rails/rails/blob/ffcbf6f205363f8c2fb3e9834bc86690dd59f1cb/railties/lib/rails/generators/actions.rb#L489
+        def inject_routes
+          routes = <<~ROUTES
+            resources :task_runs, only: [ :new, :create, :index, :show ] do
+              get "source_code", on: :collection
+            end
+          ROUTES
+
+          inject_into_file("config/routes.rb", after: "namespace :admin do\n") do
+            routes.strip_heredoc.indent(4)
+          end
         end
 
         # def generate_model

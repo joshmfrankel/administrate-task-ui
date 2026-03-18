@@ -2,11 +2,10 @@ module Administrate
   module Task
     module Ui
       class TaskRunner
-        attr_reader :task_name, :current_user, :arguments, :runner_class
+        attr_reader :task_name, :arguments, :runner_class
 
-        def initialize(task_name:, current_user:, arguments: {})
+        def initialize(task_name:, arguments: {})
           @task_name = task_name
-          @current_user = current_user
           @arguments = arguments&.values || {}
           @runner_class = ::TaskRun
         end
@@ -20,7 +19,6 @@ module Administrate
             output: "n/a",
             error: "n/a",
             started_at: Time.current,
-            user_id: current_user.id,
           )
           task_pid = fork do
             task_run.update(
@@ -42,11 +40,10 @@ module Administrate
               output: task_run_result[:stdout],
               finished_at: task_run_result[:finished_at],
               metadata: {
-                user_id: current_user.id,
-                user_email: current_user.email_address,
                 duration: task_run_result[:finished_at] - task_run.started_at,
                 process_id: Process.pid,
-                arguments: arguments
+                arguments: arguments,
+                **Administrate::Task::Ui.metadata.call
               },
               error: build_error(task_run_result[:error])
             )
