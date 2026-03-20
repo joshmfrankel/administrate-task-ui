@@ -58,4 +58,4 @@ end
 
 ## License
 
-The gem is available as open source under the terms of the modified [ANTIRACIST ETHICAL SOURCE LICENSE (ATR)](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the modified [ANTIRACIST ETHICAL SOURCE LICENSE (ATR)](https://attheroot.dev).
