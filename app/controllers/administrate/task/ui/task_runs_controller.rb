@@ -26,7 +26,18 @@ module Administrate
         end
 
         def source_code
-          # TODO: guard against missing file
+          available_tasks_hash = ::Administrate::Task::Ui::TaskFormatter.available_tasks_hash
+
+          unless available_tasks_hash.key?(params[:task_name])
+            flash[:error] = "Task #{params[:task_name]} not found."
+            redirect_to new_admin_task_run_path and return
+          end
+
+          unless File.exist?(available_tasks_hash[params[:task_name]][:source_location])
+            flash[:error] = "Source code for task #{params[:task_name]} not found."
+            redirect_to new_admin_task_run_path and return
+          end
+
           @source_code ||= File.read(
             ::Administrate::Task::Ui::TaskFormatter.available_tasks_hash[params[:task_name]][:source_location]
           )

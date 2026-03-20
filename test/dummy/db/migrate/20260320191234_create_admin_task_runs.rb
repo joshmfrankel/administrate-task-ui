@@ -1,0 +1,15 @@
+class CreateAdminTaskRuns < ActiveRecord::Migration[8.1]
+  def change
+    create_table :admin_task_runs do |t|
+      t.string :task_name, null: false, index: true
+      t.string :status, null: false, index: true, default: "pending"
+      t.text :output
+      t.text :error
+      t.text :metadata, default: "{}"
+      t.datetime :started_at
+      t.datetime :finished_at
+
+      t.timestamps
+    end
+  end
+end

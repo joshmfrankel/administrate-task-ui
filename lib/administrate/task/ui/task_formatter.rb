@@ -5,7 +5,7 @@ module Administrate
         attr_reader :available_tasks
 
         def initialize(available_tasks = [])
-          @available_tasks = available_tasks.presence || ::Administrate::Task::Ui::TaskLoader.available_tasks
+          @available_tasks = available_tasks.presence || ::Administrate::Task::Ui::BuildAllowedTasks.call
         end
 
         class << self

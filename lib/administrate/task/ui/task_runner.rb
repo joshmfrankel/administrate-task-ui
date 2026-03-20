@@ -11,8 +11,8 @@ module Administrate
         end
 
         def call
-          return :running if runner_class.find_by(task_name:, status: "running").present?
-          return :not_allowed unless Administrate::Task::Ui::TaskLoader.available_tasks.map(&:to_s).include?(task_name)
+          return :running if running_task?(task_name)
+          return :not_allowed unless Administrate::Task::Ui::BuildAllowedTasks.call.map(&:to_s).include?(task_name)
 
           task_run = runner_class.create(
             task_name:,
@@ -21,6 +21,8 @@ module Administrate
             error: "n/a",
             started_at: Time.current,
           )
+
+          # NOTE: This could be abstracted to the strategy pattern to support different processing strategies.
           task_pid = fork do
             task_run.update(
               metadata: {
@@ -30,6 +32,7 @@ module Administrate
             )
 
             rake_task = ::Rake::Task[task_name]
+
             rake_task.reenable
 
             task_run_result = with_captured_io do
@@ -58,6 +61,10 @@ module Administrate
         end
 
         private
+
+        def running_task?(task_name)
+          runner_class.exists?(task_name:, status: "running")
+        end
 
         def build_error(error)
           return {} if error.blank?

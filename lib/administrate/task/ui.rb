@@ -1,7 +1,9 @@
 require "rake"
+require "administrate"
 require "administrate/task/ui/version"
 require "administrate/task/ui/engine"
-require "administrate/task/ui/task_loader"
+require "administrate/task/ui/load_tasks"
+require "administrate/task/ui/build_allowed_tasks"
 require "administrate/task/ui/task_runner"
 require "administrate/task/ui/task_formatter"
 

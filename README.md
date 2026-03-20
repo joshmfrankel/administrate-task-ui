@@ -1,12 +1,10 @@
 # Administrate::Task::Ui
 
-Short description and motivation.
-
-## Usage
-
-How to use my plugin.
+Run any Rake tasks directly inside Administrate
 
 ## Installation
+
+This engine is dependent upon `administrate`. Please follow the excellent [Getting Started](https://administrate-demo.herokuapp.com/getting_started) before continuing to install `administrate-task-ui`.
 
 Add this line to your application's Gemfile:
 
@@ -14,22 +12,50 @@ Add this line to your application's Gemfile:
 gem "administrate-task-ui"
 ```
 
-And then execute:
+Then `bundle` or globally `gem install administrate-task-ui`.
 
-```bash
-$ bundle
+Next run the install generator:
+
+```ruby
+rails generate administrate:task:ui:install
 ```
 
-Or install it yourself as:
+This will add a new route along with a initializer template.
 
-```bash
-$ gem install administrate-task-ui
+## Configuration
+
+`allowed_tasks` - An array of Rake tasks you would like to be runnable. This is a permissive check so the following will be matched.
+
+```ruby
+Administrate::Task::Ui.allowed_tasks = ["say:hello", "has_nested"]
+
+#=> ["say:hello, "has_nested:task", "has_nested:task:another_one"]
 ```
+
+`metadata` - A Proc that can be supplied to inject additional metadata into the TaskRun.
+
+```ruby
+Administrate::Task::Ui.metadata = -> do
+  current_user = Current.user
+  {
+    user_id: current_user.id
+  }
+end
+```
+
+## Features
+
+1. Run any Rake task from Administrate
+2. View source code for a Rake task before running it
+3. Lock any currently running Rake task from being re-run until completed
+4. Filter dashboard by TaskRun status
+5. Forks Rake runs to avoid waiting on tasks (future: ActiveJob execution strategy)
 
 ## Contributing
 
-Contribution directions go here.
+- Pull requests welcome
+- Be respectful
 
 ## License
 
-The gem is available as open source under the terms of the [ANTIRACIST ETHICAL SOURCE LICENSE (ATR)](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the modified [ANTIRACIST ETHICAL SOURCE LICENSE (ATR)](https://opensource.org/licenses/MIT).
