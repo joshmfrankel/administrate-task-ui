@@ -11,8 +11,9 @@ module Administrate
         end
 
         def call
-          # TODO: CacheAccessor should early return if there is a lock here
-          # TODO: CacheAccessor should lock here
+          return :running if runner_class.find_by(task_name:, status: "running").present?
+          return :not_allowed unless Administrate::Task::Ui::TaskLoader.available_tasks.map(&:to_s).include?(task_name)
+
           task_run = runner_class.create(
             task_name:,
             status: "running",
@@ -47,8 +48,6 @@ module Administrate
               },
               error: build_error(task_run_result[:error])
             )
-
-            # TODO: CacheAccessor should unlock here
           end
 
           # Ensure when the child process terminates, zombie

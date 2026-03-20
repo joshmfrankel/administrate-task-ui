@@ -7,7 +7,7 @@ class TaskRunDashboard < ::Administrate::Task::Ui::TaskRunDashboard
   # ATTRIBUTE_TYPES.merge!(
   #   user_id: Field::String.with_options(
   #     getter: ->(field) do
-  #       YAML.load(field.resource.metadata)["user_id"]
+  #       field.resource.metadata["user_id"]
   #     end
   #   )
   # )

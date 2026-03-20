@@ -11,6 +11,7 @@ module Administrate
         include ::Administrate::GeneratorHelpers
 
         source_root File.expand_path("../templates", __FILE__)
+
         def generate_migration
           migration_template(
             "db/migrate/create_admin_task_runs.rb.erb",
@@ -37,27 +38,6 @@ module Administrate
             routes.strip_heredoc.indent(4)
           end
         end
-
-        # def generate_model
-        #   template(
-        #     "models/administrate/task/ui/task_run.rb.erb",
-        #     "app/models/administrate/task/ui/task_run.rb"
-        #   )
-        # end
-
-        # def generate_controller
-        #   template(
-        #     "controllers/admin/task_runs_controller.rb.erb",
-        #     "app/controllers/admin/task_runs_controller.rb"
-        #   )
-        # end
-
-        # def generate_dashboard
-        #   template(
-        #     "dashboards/admin/task_run_dashboard.rb.erb",
-        #     "app/dashboards/admin/task_run_dashboard.rb"
-        #   )
-        # end
 
         def self.next_migration_number(dir)
           ::ActiveRecord::Generators::Base.next_migration_number(dir)

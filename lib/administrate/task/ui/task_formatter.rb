@@ -18,6 +18,14 @@ module Administrate
           end
         end
 
+        def task_running?(task_name)
+          running_tasks.include?(task_name)
+        end
+
+        def running_tasks
+          @_running_tasks ||= ::TaskRun.where(status: "running").pluck(:task_name)
+        end
+
         def available_tasks_hash
           @_available_tasks_hash ||= {}.tap do |hash|
             available_tasks.each do |task|
@@ -26,7 +34,8 @@ module Administrate
                 value: task.name,
                 comment:,
                 source_location: task.actions[0].source_location[0],
-                arg_names: task.arg_names
+                arg_names: task.arg_names,
+                running: task_running?(task.name)
               }
             end
           end
@@ -35,8 +44,10 @@ module Administrate
         def available_tasks_hash_for_field
           @_available_tasks_hash_for_field ||= available_tasks_hash.map do |key, value|
             display = key
+            task_running = task_running?(key)
             display += " - #{value[:comment]}"
-            [ display, key ]
+            display = "[RUNNING] #{display}" if task_running
+            [ display, key, disabled: task_running ]
           end
         end
       end
