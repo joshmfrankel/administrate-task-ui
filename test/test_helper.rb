@@ -19,13 +19,15 @@ if ActiveSupport::TestCase.respond_to?(:fixture_paths=)
 end
 
 class ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)
 
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
-  # Enable spec-style DSL
+  # Enable spec-style DSL (e.g. `context` method)
   extend Minitest::Spec::DSL
   class << self
     alias context describe

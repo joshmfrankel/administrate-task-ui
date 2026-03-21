@@ -30,6 +30,7 @@ class Administrate::Task::Ui::BuildAllowedTasksTest < ActiveSupport::TestCase
             ::Rake::Task["minitest:nested:without_arguments"],
             ::Rake::Task["minitest:with_arguments"],
             ::Rake::Task["minitest:without_arguments"],
+            ::Rake::Task["namespaced:custom:no_comment"],
             ::Rake::Task["namespaced:custom:without_arguments"]
           ]
         end

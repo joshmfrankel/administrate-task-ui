@@ -19,7 +19,7 @@ class Administrate::Task::Ui::TaskRunnerTest < ActiveSupport::TestCase
     it "creates a new task run" do
       with_configuration([ "minitest:nested:without_arguments" ]) do
         runner = Administrate::Task::Ui::TaskRunner.new(task_name: "minitest:nested:without_arguments")
-        with_inline_fork(runner:) do
+        perform_enqueued_jobs do
           result = runner.call
 
           assert_equal "minitest:nested:without_arguments", result.task_name
@@ -37,7 +37,7 @@ class Administrate::Task::Ui::TaskRunnerTest < ActiveSupport::TestCase
     it "gracefully handles errors and metadata" do
       with_configuration([ "error:raised" ], metadata: -> { { user_id: 123 } }) do
         runner = Administrate::Task::Ui::TaskRunner.new(task_name: "error:raised")
-        with_inline_fork(runner:) do
+        perform_enqueued_jobs do
           result = runner.call
 
           assert_equal "error:raised", result.task_name
@@ -53,14 +53,6 @@ class Administrate::Task::Ui::TaskRunnerTest < ActiveSupport::TestCase
           assert_equal result.metadata[:user_id], 123
           assert_instance_of Float, result.metadata[:duration]
         end
-      end
-    end
-  end
-
-  def with_inline_fork(pid = 12_345, runner:)
-    Process.stub(:detach, ->(arg) { assert_equal pid, arg }) do
-      runner.stub(:fork, ->(&blk) { blk.call; pid }) do
-        yield
       end
     end
   end
