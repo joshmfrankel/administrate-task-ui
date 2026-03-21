@@ -49,7 +49,7 @@ end
 2. View source code for a Rake task before running it
 3. Lock any currently running Rake task from being re-run until completed
 4. Filter dashboard by TaskRun status
-5. Forks Rake runs to avoid waiting on tasks (future: ActiveJob execution strategy)
+5. Background jobs run Rake
 
 ## Contributing
 

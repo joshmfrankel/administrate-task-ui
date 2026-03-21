@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_18_173615) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_20_191234) do
   create_table "admin_task_runs", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "error"
@@ -21,7 +21,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_18_173615) do
     t.string "status", default: "pending", null: false
     t.string "task_name", null: false
     t.datetime "updated_at", null: false
-    t.index [ "status" ], name: "index_admin_task_runs_on_status"
-    t.index [ "task_name" ], name: "index_admin_task_runs_on_task_name"
+    t.index ["status"], name: "index_admin_task_runs_on_status"
+    t.index ["task_name"], name: "index_admin_task_runs_on_task_name"
   end
 end

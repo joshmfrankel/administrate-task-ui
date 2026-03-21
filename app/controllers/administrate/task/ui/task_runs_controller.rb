@@ -52,7 +52,7 @@ module Administrate
         end
 
         def scoped_resource
-          resource_class.order(finished_at: :desc)
+          resource_class.order(started_at: :desc)
         end
       end
     end

@@ -19,7 +19,8 @@ class Administrate::Task::Ui::TaskRunnerTest < ActiveSupport::TestCase
     it "creates a new task run" do
       with_configuration([ "minitest:nested:without_arguments" ]) do
         runner = Administrate::Task::Ui::TaskRunner.new(task_name: "minitest:nested:without_arguments")
-        perform_enqueued_jobs do
+
+        perform_enqueued_jobs(only: Administrate::Task::Ui::TaskRunnerJob) do
           result = runner.call
 
           assert_equal "minitest:nested:without_arguments", result.task_name
@@ -31,13 +32,14 @@ class Administrate::Task::Ui::TaskRunnerTest < ActiveSupport::TestCase
           assert_instance_of Float, result.metadata[:duration]
           assert_instance_of ActiveSupport::TimeWithZone, result.started_at
         end
+        assert_performed_jobs(1)
       end
     end
 
     it "gracefully handles errors and metadata" do
       with_configuration([ "error:raised" ], metadata: -> { { user_id: 123 } }) do
         runner = Administrate::Task::Ui::TaskRunner.new(task_name: "error:raised")
-        perform_enqueued_jobs do
+        perform_enqueued_jobs(only: Administrate::Task::Ui::TaskRunnerJob) do
           result = runner.call
 
           assert_equal "error:raised", result.task_name
@@ -53,6 +55,7 @@ class Administrate::Task::Ui::TaskRunnerTest < ActiveSupport::TestCase
           assert_equal result.metadata[:user_id], 123
           assert_instance_of Float, result.metadata[:duration]
         end
+        assert_performed_jobs(1)
       end
     end
   end
