@@ -1,5 +1,8 @@
 # Administrate::Task::Ui
 
+[![Ruby](https://github.com/joshmfrankel/administrate-task-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/joshmfrankel/administrate-task-ui/actions/workflows/ci.yml)
+[![Gem Version](https://badge.fury.io/rb/administrate-task-ui.svg?icon=si%3Arubygems&icon_color=%23959da5)](https://badge.fury.io/rb/administrate-task-ui)
+
 Run any Rake tasks directly inside Administrate
 
 ## Installation
