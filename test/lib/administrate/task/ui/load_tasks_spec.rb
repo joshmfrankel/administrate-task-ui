@@ -28,6 +28,7 @@ class Administrate::Task::Ui::LoadTasksTest < ActiveSupport::TestCase
       context "when the Rake application has tasks loaded" do
         it "returns the tasks but does not load them" do
           ::Rails.application.load_tasks
+          Administrate::Task::Ui::LoadTasks.mark_rails_tasks_loaded!
 
           rails_app = Object.new
           rails_app.define_singleton_method(:load_tasks) do
